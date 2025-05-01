@@ -1,25 +1,24 @@
 
 IDIR=./include
 CFLAGS=-I$(IDIR)
-CC = gcc
+CC = g++
 TOOLS_FOLDER = ./tools
 BIN = ./bin
 
 ODIR=bin
 LIBS=-lm
 
+./bin/%.o: ./src/%.C
+	$(CC) -c $< -o $@ $(CFLAGS)
 
-./bin/%.o: ./src/%.c
-	$(CC) -c -o $@ $< $(CFLAGS)
-
-main: ./bin/HT.o ./bin/main.o ./bin/decoder.o ./bin/parseMessage.o
+main: ./bin/main.o  ./bin/HT.o ./bin/decoder.o ./bin/parseMessage.o
 	$(CC) -o $@ $^ $(CFLAGS) 
 
-./bin/main.o: ./src/main.C 
+bin/main.o: src/main.C include/decoder.h
 
-./bin/HT.o: ./include/HT.h
+bin/HT.o: src/HT.C include/HT.h
 
-./bin/decoder.o: ./src/decoder.C
+bin/decoder.o: ./src/decoder.C
 
 ./bin/parseMessage.o: ./src/parseMessage.C ./include/parseMessage.h ./include/can.h ./include/HT.h
 

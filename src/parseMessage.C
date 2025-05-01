@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdint.h>
-#include "../include/parseMessage.h"
+
 #include "../include/can.h"
 #include "../include/HT.h"
-
+#include "../include/decoder.h"
+#include "../include/parseMessage.h"
 
 // we will parse through each message and use the getBits function to correctly select the bits
 int getBits(int source, int low, int high)
@@ -14,17 +15,17 @@ int getBits(int source, int low, int high)
    return source;
 }
 
-void parseMessage(HashTable * decoderHashTable, int id, uint64_t message) {
+int parseMessage(decoder * currentDecoder, int id, uint64_t message) {
   switch(id) {
     case BMS_ID:
-      ht_insert(currentDecoder->decoderHashTable, STATE, getBits(0, 31));
-      ht_insert(currentDecoder->decoderHashTable, CHARGE, getBits(32, 63));
-      break;
+      ht_insert(currentDecoder->decoderHashTable, STATE, getBits(message, 0, 31));
+      ht_insert(currentDecoder->decoderHashTable, CHARGE, getBits(message, 32, 63));
+      return 1;
     case MC_ID:
-      ht_insert(currentDecoder->decoderHashTable, SPEED, getBits(0, 63));
-      break;
+      ht_insert(currentDecoder->decoderHashTable, SPEED, getBits(message, 0, 63));
+      return 1;
   }
-  return;
+  return 0;
 } 
 
 

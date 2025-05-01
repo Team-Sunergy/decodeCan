@@ -1,15 +1,9 @@
+#include <cstdint>
+#include <cstdio>
 #include "../include/HT.h"
 #include "../include/can.h"
-
-#define INACTIVE    0
-#define ACTIVE      1
-
-
-typedef struct {
-    HashTable* decoderHashTable;
-    bool state;
-} decoder;
-
+#include "../include/decoder.h"
+#include "../include/parseMessage.h"
 /**
  * Initializes the decoder.
 */
@@ -35,21 +29,19 @@ void update_decoder(decoder* currentDecoder, int id, int message) {
     }
     // parse message code
     // psuedo code to parse
-
-
-    // ht_insert(currentDecoder->decoderHashTable, id, message);
+    parseMessage(currentDecoder, BMS_ID, message);
 }
 
 int grab_field(decoder* currentDecoder, int field) {
     
-    int val;
+    int* val;
     // search for item
-    if((val = ht_search(currentDecoder->decoderHashTable)) == NULL) {
+    if((val = ht_search(currentDecoder->decoderHashTable, field)) == NULL) {
         printf("value has not been updated\n");
         return -1; 
     }
 
-    return val;
+    return *val;
 }
 
 /**

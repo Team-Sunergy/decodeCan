@@ -227,6 +227,7 @@ void ht_insert(HashTable *table, int key, int value) {
         }
         else {
             // case2 COLLISSION!!!!
+            printf("collision");
             handle_collision(table, index, item);
             return;
         }

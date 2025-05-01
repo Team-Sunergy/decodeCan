@@ -1,5 +1,3 @@
-#include <cstdint>
-
 #define CAPACITY 2000 // Size of the HashTable.
 
 // Defines the HashTable item.
